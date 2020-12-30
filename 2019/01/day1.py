@@ -2,6 +2,12 @@
 
 import sys
 
+ints = list(map(int, open(sys.argv[1])))
+
+# Part 1
+print(sum(map(lambda x: x // 3 - 2, ints)))
+
+# Part 2
 def calcfuel(f):
     total = 0
     while f > 0:
@@ -10,8 +16,4 @@ def calcfuel(f):
             total += f
     return total
 
-s = 0
-for line in sys.stdin:
-    s += calcfuel(int(line))
-
-print(s)
+print(sum(map(lambda x: calcfuel(x), ints)))
