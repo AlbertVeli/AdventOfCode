@@ -16,4 +16,4 @@ def calcfuel(f):
             total += f
     return total
 
-print(sum(map(lambda x: calcfuel(x), ints)))
+print(sum(map(calcfuel, ints)))
