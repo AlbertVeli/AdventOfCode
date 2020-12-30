@@ -7,17 +7,15 @@ from intmachine import Intmachine
 from collections import deque
 
 prog = []
-for i in map(int, input('').split(',')):
+for i in map(int, open(sys.argv[1]).readline().split(',')):
     prog.append(i)
 
 # Create input/output queue
 dqi = deque()
 dqo = deque()
 
-# Push rest of the input to queue
-for line in sys.stdin:
-    inp = int(line)
-    dqi.appendleft(inp)
+# Part 1, append 1. Change to 5 for part 2.
+dqi.appendleft(1)
 
 # Create machine and run it
 machine = Intmachine('day5', prog, dqi, dqo)
