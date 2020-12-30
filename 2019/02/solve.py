@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
+import sys
+
 # Tip: look at day 7, intcode.py for a general intcode machine.
 
-arr = []
-
-for i in map(int, input('').split(',')):
-    arr.append(i)
+arr = list(map(int, open(sys.argv[1]).readline().split(',')))
 
 arr[1] = 12
 arr[2] = 2
@@ -17,7 +16,7 @@ while op != 99:
     if op == 99:
         #print(arr)
         print(arr[0])
-        exit(0)
+        sys.exit(0)
     pc += 1
     a, b, c = arr[pc : pc + 3]
     pc += 3

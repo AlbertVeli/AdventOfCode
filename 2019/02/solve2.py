@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
+import sys
+
 # Tip: look at day 7, intcode.py for a general intcode machine.
 
-prog = []
-
-for i in map(int, input('').split(',')):
-    prog.append(i)
+prog = list(map(int, open(sys.argv[1]).readline().split(',')))
 
 def run_prog(noun, verb):
     mem = list(prog)
@@ -27,7 +26,7 @@ def run_prog(noun, verb):
             res = mem[a] * mem[b]
         else:
             print('illegal op %d at pos %d' % op, pc - 4)
-            exit(1)
+            sys.exit(1)
         mem[c] = res
 
 for noun in range(100):
@@ -35,4 +34,4 @@ for noun in range(100):
         res = run_prog(noun, verb)
         if res == 19690720:
             print(100 * noun + verb)
-            exit(0)
+            sys.exit(0)
