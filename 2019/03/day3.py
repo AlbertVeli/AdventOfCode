@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import sys
+
 # Use array instead of list, much faster lookups
 import array
 
@@ -8,16 +10,14 @@ dirs = { 'R': (1, 0),
          'U': (0, -1),
          'D': (0, 1) }
 
-line1 = input('').split(',')
-line2 = input('').split(',')
-
 l1 = []
 l2 = []
 
-for s in line1:
-    l1.append((dirs[s[0]], int(s[1:])))
-for s in line2:
-    l2.append((dirs[s[0]], int(s[1:])))
+with open(sys.argv[1]) as f:
+    for s in f.readline().split(','):
+        l1.append((dirs[s[0]], int(s[1:])))
+    for s in f.readline().split(','):
+        l2.append((dirs[s[0]], int(s[1:])))
 
 minx = 0
 miny = 0
