@@ -1,0 +1,5 @@
+*.pyc
+*.swp
+cookie.txt
+misc/
+.mypy_cache

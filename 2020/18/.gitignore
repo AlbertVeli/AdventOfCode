@@ -1,0 +1,6 @@
+calc
+calc.output
+calc.tab.c
+calc.tab.h
+lex.yy.c
+result.txt

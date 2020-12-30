@@ -1,0 +1,12 @@
+# Organize output from solve2a.py into three groups, A, B and C.
+
+A 'L12', 'L12', 'R12',
+A 'L12', 'L12', 'R12',
+B 'L8', 'L8', 'R12', 'L8', 'L8',
+C 'L10','R8', 'R12',
+C 'L10','R8', 'R12',
+A 'L12', 'L12', 'R12',
+B 'L8', 'L8', 'R12', 'L8', 'L8',
+C 'L10', 'R8', 'R12',
+A 'L12', 'L12', 'R12',
+B 'L8', 'L8', 'R12', 'L8', 'L8'
