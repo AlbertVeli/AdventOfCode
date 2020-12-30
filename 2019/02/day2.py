@@ -29,9 +29,11 @@ def run_prog(noun, verb):
             sys.exit(1)
         mem[c] = res
 
+print('Part 1:', run_prog(12, 2))
+
 for noun in range(100):
     for verb in range(100):
         res = run_prog(noun, verb)
         if res == 19690720:
-            print(100 * noun + verb)
+            print('Part 2:', 100 * noun + verb)
             sys.exit(0)
