@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-# quick hack. This whole solution could be much improved.
+import sys
+import re
 
-doubles = ['00', '11', '22', '33', '44', '55', '66', '77', '88', '99']
+double_re = re.compile(r'.*(\d)\1')
 
 def passfilters1(s):
     # Not decreasing
@@ -11,12 +12,8 @@ def passfilters1(s):
             return False
 
     # At least one double
-    for i in range(int(s[0]), 10):
-        ss = doubles[i]
-        if ss in s:
-            return True
+    return re.match(double_re, s) != None
 
-    return False
 
 def passfilters2(s):
     # Not decreasing
@@ -25,6 +22,7 @@ def passfilters2(s):
             return False
 
     # At least one exactly double
+    # This could probably be written much shorter
     same = 1
     last = s[0]
     for i in range(1, 6):
@@ -42,11 +40,7 @@ def passfilters2(s):
     return False
 
 
-a, b = map(int, input('').split('-'))
+a, b = map(int, open(sys.argv[1]).readline().split('-'))
 
-p = 0
-for i in range(a, b):
-    # Change to passfilters1 for task 1
-    if passfilters2(str(i)):
-        p += 1
-print(p)
+print('Part 1:', sum([passfilters1(str(i)) for i in range(a, b + 1)]))
+print('Part 2:', sum([passfilters2(str(i)) for i in range(a, b + 1)]))
