@@ -26,5 +26,5 @@ def input_as_ints(filename:str) -> List[int]:
 # Integers on one line, comma or space or whatever-separated
 def input_as_line_of_ints(filename:str) -> List[int]:
     s = input_as_string(filename)
-    list_as_str = re.findall(r'(\d+)', s)
+    list_as_str = re.findall(r'([-+]?\d+)', s)
     return list(map(int, list_as_str))
