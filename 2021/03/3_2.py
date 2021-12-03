@@ -7,13 +7,15 @@ from aoc_input import *
 if len(sys.argv) != 2:
     print('Usage:', sys.argv[0], '<input.txt>')
     sys.exit(1)
-sorg = input_as_lines(sys.argv[1])
+ss_org = input_as_lines(sys.argv[1])
 
-l = len(sorg[0])
+l = len(ss_org[0])
 
 def bitfiddle(keep_common):
-    ss = list(sorg)
+    ss = list(ss_org)
+
     for i in range(l):
+        # Count
         zeros = 0
         ones = 0
         for s in ss:
@@ -35,21 +37,15 @@ def bitfiddle(keep_common):
             else:
                 keep = '0'
 
-        scp = list(ss)
-        for s in scp:
-            # All bit values are unique so it is safe
-            # to use ss.remove()
-            if s[i] != keep:
-                ss.remove(s)
+        # Filter out keepers
+        ss = list(filter(lambda x: x[i] == keep, ss))
+
         if len(ss) == 1:
             break
 
-    return ss
+    return int(ss[0], 2)
 
-ss = bitfiddle(True)
-oxy = int(ss[0], 2)
-
-ss = bitfiddle(False)
-co2 = int(ss[0], 2)
+oxy = bitfiddle(True)
+co2 = bitfiddle(False)
 
 print(oxy, co2, oxy * co2)
