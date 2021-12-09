@@ -51,6 +51,7 @@ print(risk)
 
 # Flood fill
 def basin(y, x):
+    # points = points in basin
     points = [(y, x)]
     done = []
     while True:
@@ -64,8 +65,7 @@ def basin(y, x):
             # Done, all points handled
             return points
 
-        # Check adjacent points
-        new_points = []
+        # Check adjacent cells
         y = p[0]
         x = p[1]
         tpoints = [(y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)]
@@ -74,9 +74,10 @@ def basin(y, x):
                 # Outside grid
                 continue
             if (not (ty, tx) in points) and a[ty][tx] < 9:
-                new_points.append((ty, tx))
+                # Add to basin points
+                points.append((ty, tx))
+        # Done testing adjacent points around point p
         done.append(p)
-        points += new_points
 
 lens = []
 for y, x in low_points:
