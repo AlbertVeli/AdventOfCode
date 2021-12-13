@@ -42,21 +42,40 @@ for y, x in coords:
 
 def foldy(row):
     global a
-    for y2 in range(row + 1, sy):
-        y1 = row - (y2 - row)
-        a[y1] |= a[y2]
-    a = a[0:row]
+    try:
+        a[:row] |= a[sy-1:row:-1]
+    except:
+        print('error:', a.shape, 'row', row)
+    a = a[:row]
 
 def foldx(col):
     global a
-    for x2 in range(col + 1, sx):
-        x1 = col - (x2 - col)
-        a[:,x1] |= a[:,x2]
-    a = a[:,0:col]
+    try:
+        a[:,:col] |= a[:,sx-1:col:-1]
+    except:
+        print('error:', a.shape, 'col', col)
+    a = a[:,:col]
 
-f = folds[0]
-if f[0] == 'x':
-    foldx(f[1])
-else:
-    foldy(f[1])
-print(np.count_nonzero(a == True))
+def print_a():
+    global a
+    for ly in a:
+        for b in ly:
+            if b:
+                c = '#'
+            else:
+                c = '.'
+            sys.stdout.write(c)
+        sys.stdout.write('\n')
+
+for i in range(len(folds)):
+    axis, val = folds[i]
+    if axis == 'x':
+        foldx(val)
+    else:
+        foldy(val)
+    sy, sx = a.shape
+    if i == 0:
+        print('part 1:', np.count_nonzero(a == True))
+print('part 2:')
+print_a()
+
