@@ -24,10 +24,7 @@ def move(a):
         for x in range(sx):
             if a_org[y][x] != '>':
                 continue
-            if x == sx - 1:
-                nx = 0
-            else:
-                nx = x + 1
+            nx = (x + 1) % sx
             if a_org[ny][nx] == '.':
                 a[ny][nx] = '>'
                 a[y][x] = '.'
@@ -35,10 +32,7 @@ def move(a):
     # Move down
     a_org = np.array(a)
     for y in range(sy):
-        if y == sy - 1:
-            ny = 0
-        else:
-            ny = y + 1
+        ny = (y + 1) % sy
         for x in range(sx):
             nx = x
             if a_org[y][x] != 'v':
