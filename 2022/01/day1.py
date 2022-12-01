@@ -7,19 +7,13 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 totals = []
-total = 0
 
-for line in open(sys.argv[1]):
-    line = line.rstrip()
-    if len(line) > 0:
-        n = int(line, 10)
-        total += n
-    else:
-        totals.append(total)
-        total = 0
-totals.append(total)
+# Each user is separated by empty line, strip last newline
+for user in open(sys.argv[1]).read().rstrip().split('\n\n'):
+    # Each value for one user separated by \n, sum them up
+    totals.append((sum(map(int, user.split('\n')))))
 
-totals = sorted(totals)[::-1]
+totals.sort(reverse = True)
 totals = totals[:3]
 
 print('Part 1:', totals[0])
