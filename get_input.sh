@@ -27,6 +27,8 @@ day=$1
 # Put your own session cookie and year in cookie.txt
 # year=2019
 # cookie='cookie: session=1234abcd..'
-. ${DIR}/cookie.txt
+. ${DIR}/cookie.txt || exit 1
 
-curl "https://adventofcode.com/${year}/day/${day}/input" -H "$cookie" --compressed
+agent='github.com/AlbertVeli/AdventOfCode'
+
+curl "https://adventofcode.com/${year}/day/${day}/input" -A "$agent" -H "$cookie" --compressed
