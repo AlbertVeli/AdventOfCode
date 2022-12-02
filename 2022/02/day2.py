@@ -6,18 +6,20 @@ if len(sys.argv) != 2:
     print('Usage:', sys.argv[0], '<input.txt>')
     sys.exit(1)
 
-d = {
-    'A X' : 1 + 3,
-    'A Y' : 2 + 6,
-    'A Z' : 3 + 0,
-    'B X' : 1 + 0,
-    'B Y' : 2 + 3,
-    'B Z' : 3 + 6,
-    'C X' : 1 + 6,
-    'C Y' : 2 + 0,
-    'C Z' : 3 + 3
+# All possible combinations
+score = {
+    'A X' : 1 + 3, # rock - rock
+    'A Y' : 2 + 6, # rock - paper
+    'A Z' : 3 + 0, # rock - scissors
+    'B X' : 1 + 0, # paper - rock
+    'B Y' : 2 + 3, # paper - paper
+    'B Z' : 3 + 6, # paper - scissors
+    'C X' : 1 + 6, # scissors - rock
+    'C Y' : 2 + 0, # scissors - paper
+    'C Z' : 3 + 3  # scissors - scissors
 }
 
+# All combinations of what to pick to lose, draw, win
 d2 = {
     'A X' : 'A Z',
     'A Y' : 'A X',
@@ -30,12 +32,11 @@ d2 = {
     'C Z' : 'C X'
 }
 
-a = open(sys.argv[1]).read().rstrip().split('\n')
 score1 = 0
 score2 = 0
-for line in a:
-    score1 += d[line]
-    score2 += d[d2[line]]
+for line in map(str.rstrip, open(sys.argv[1])):
+    score1 += score[line]
+    score2 += score[d2[line]]
 
 print('Part 1:', score1)
 print('Part 2:', score2)
