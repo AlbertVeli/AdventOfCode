@@ -9,8 +9,6 @@ if len(sys.argv) != 2:
     print('Usage:', sys.argv[0], '<input.txt>')
     sys.exit(1)
 
-# TODO: Refactor parsing of input, this is ugly
-
 def parseline(line):
     row = []
     for i in range(0, len(line), 4):
@@ -21,43 +19,36 @@ def parseline(line):
             row.append('')
     return row
 
-stacking = True
-rows = []
 moves = []
-for line in map(str.rstrip, open(sys.argv[1])):
 
-    if stacking:
-        # Build up the stacks
-        if line.startswith(' 1'):
-            stacking = False
-            continue
-        rows.append(parseline(line))
-    else:
-        # Moves
-        move = tuple(map(int, re.findall(r'(\d+)', line)))
-        if len(move) > 0:
-            moves.append(move)
-nstacks = max([len(r) for r in rows])
+a1, a2 = open(sys.argv[1]).read().rstrip().split('\n\n')
+
+# Initial stacks
+a1 = a1.split('\n')
+# Number of stacks is last integer on line after initial stacks
+nstacks = tuple(map(int, re.findall(r'(\d+)', a1.pop())))[-1]
 stacks = []
 for _ in range(nstacks):
     stacks.append(deque())
-
-for row in rows:
+for line in a1:
+    row = parseline(line)
     for i in range(len(row)):
         e = row[i]
         if e != '':
             stacks[i].appendleft(e)
 
+# Moves
+a2 = a2.split('\n')
+for s in a2:
+    moves.append(tuple(map(int, re.findall(r'(\d+)', s))))
+
 # Start moving
-
-#print(stacks)
-
 for n, src, dst in moves:
     for i in range(n):
         e = stacks[src - 1].pop()
         stacks[dst - 1].append(e)
-    #print(stacks)
 
+# Print result
 res = ''
 for s in stacks:
     res += s[-1]
