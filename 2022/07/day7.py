@@ -7,9 +7,6 @@ if len(sys.argv) != 2:
     print('Usage:', sys.argv[0], '<input.txt>')
     sys.exit(1)
 
-#def def_value():
-#    return 0
-
 # cwd + filename : filesize
 files = dict()
 files['/'] = 0
@@ -72,8 +69,6 @@ lines = open(sys.argv[1]).read().rstrip().split('\n')
 for line in lines:
     parseline(line)
 
-#print(sorted(list(dirs)))
-
 # Part 1
 total = 0
 sizes = dict()
@@ -85,6 +80,7 @@ for d in dirs:
         total += sz
 print('Part 1', total)
 
+# Part 2
 total = 70000000
 used = sizes['/']
 need_to_free = 30000000 - (total - used)
