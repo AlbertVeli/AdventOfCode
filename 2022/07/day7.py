@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 
 import sys
-from collections import defaultdict
-import os
+from pathlib import Path
 
 if len(sys.argv) != 2:
     print('Usage:', sys.argv[0], '<input.txt>')
     sys.exit(1)
 
-def def_value():
-    return 0
+#def def_value():
+#    return 0
 
 # cwd + filename : filesize
-files = defaultdict(def_value)
+files = dict()
 files['/'] = 0
 cwd = '/'
 dirs = set()
@@ -26,7 +25,6 @@ def du(d):
     return total
 
 # Change directory
-# TODO: Clean up this function
 def cd(d):
     global cwd
 
@@ -35,18 +33,11 @@ def cd(d):
         cwd = '/'
     elif d == '..':
         # cd ..
-        if cwd == '/':
-            return None
-        cwd = '/'.join(cwd.split('/')[:-1])
+        p = Path(cwd)
+        cwd = str(p.parent)
     else:
         # cd <dir>
-        cwd = '/'.join([cwd, d])
-
-    # Fixes because of stupid handling of rootdir '/' above
-    if cwd.startswith('//'):
-        cwd = cwd[1:]
-    if cwd == '':
-        cwd = '/'
+        cwd = cwd + '/' + d
     dirs.add(cwd)
 
 # Add file in current directory
