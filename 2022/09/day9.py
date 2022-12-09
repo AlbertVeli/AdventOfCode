@@ -18,20 +18,11 @@ def new_pos(x0, y0, x1, y1):
     # Calculate the manhattan distance
     dist = abs(x0 - x1) + abs(y0 - y1)
 
-    # Check if the positions are on the same row or column
-    if x0 == x1 or y0 == y1:
-        if dist > 1:
-            # Move in the direction of x0, y0
-            return (x1 + sign1(x0 - x1), y1 + sign1(y0 - y1))
-        else:
-            return (x1, y1)
+    # Check if tail (x1, y1) should move
+    if ((x0 == x1 or y0 == y1) and dist > 1) or dist > 2:
+        return (x1 + sign1(x0 - x1), y1 + sign1(y0 - y1))
     else:
-        # Positions are diagonal
-        if dist <= 2:
-            return (x1, y1)
-        else:
-            # Move diagonally towards x0, y0
-            return (x1 + sign1(x0 - x1), y1 + sign1(y0 - y1))
+        return (x1, y1)
 
 def run_knots(nknots):
     knots = [[0, 0] for _ in range(nknots)]
