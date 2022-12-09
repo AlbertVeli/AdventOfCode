@@ -6,42 +6,32 @@ if len(sys.argv) != 2:
     print('Usage:', sys.argv[0], '<input.txt>')
     sys.exit(1)
 
-def manhattan_distance(x0, y0, x1, y1):
-    return abs(x0 - x1) + abs(y0 - y1)
-
 def sign1(diff):
     if diff < 0:
         return -1
-    return 1
+    elif diff > 0:
+        return 1
+    return 0
 
+# ChatGPT improved version of new_pos
 def new_pos(x0, y0, x1, y1):
-    if x0 == x1:
-        if y0 - y1 > 1:
-            # Down
-            return ((x1, y1 + 1))
-        elif y1 - y0 > 1:
-            # Up
-            return ((x1, y1 - 1))
+    # Calculate the manhattan distance
+    dist = abs(x0 - x1) + abs(y0 - y1)
+
+    # Check if the positions are on the same row or column
+    if x0 == x1 or y0 == y1:
+        if dist > 1:
+            # Move in the direction of x0, y0
+            return (x1 + sign1(x0 - x1), y1 + sign1(y0 - y1))
         else:
-            return((x1, y1))
-    elif y0 == y1:
-        if x0 - x1 > 1:
-            # Right
-            return ((x1 + 1, y1))
-        elif x1 - x0 > 1:
-            # Left
-            return ((x1 - 1, y1))
-        else:
-            return((x1, y1))
+            return (x1, y1)
     else:
-        # Diagonal
-        if manhattan_distance(x0, y0, x1, y1) <= 2:
-            return((x1, y1))
-        # Need to move, always diagonal
-        dx = x0 - x1
-        dy = y0 - y1
-        return((x1 + sign1(dx), y1 + sign1(dy)))
- 
+        # Positions are diagonal
+        if dist <= 2:
+            return (x1, y1)
+        else:
+            # Move diagonally towards x0, y0
+            return (x1 + sign1(x0 - x1), y1 + sign1(y0 - y1))
 
 def run_knots(nknots):
     knots = [[0, 0] for _ in range(nknots)]
