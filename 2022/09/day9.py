@@ -42,7 +42,14 @@ def run_knots(nknots):
             elif d == 'U':
                 knot[1] -= 1
             for i in range(1, nknots):
-                knots[i] = list(new_pos(knots[i - 1][0], knots[i - 1][1], knots[i][0], knots[i][1]))
+                h = knots[i - 1]
+                t = knots[i]
+                pos = list(new_pos(h[0], h[1], t[0], t[1]))
+                # Stop moving if this knot didn't move
+                if pos == t:
+                    break
+                else:
+                    knots[i] = pos
             visited.add(tuple(knots[nknots - 1]))
     return len(visited)
 
