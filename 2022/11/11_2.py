@@ -5,22 +5,7 @@ import fileinput
 import re
 
 def do_op(old, op):
-    tokens = op.split(' ')
-
-    if tokens[0] == 'old':
-        v1 = old
-    else:
-        v1 = int(tokens[0])
-
-    if tokens[2] == 'old':
-        v2 = old
-    else:
-        v2 = int(tokens[2])
-
-    if tokens[1] == '*':
-        return v1 * v2
-    else:
-        return v1 + v2
+    return eval(op)
 
 class Monkey:
     def __init__(self, m_id, items, op, test, if_t, if_f):
