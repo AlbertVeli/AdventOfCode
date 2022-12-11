@@ -62,6 +62,10 @@ class Monkey:
 
 monkeys = []
 tests = []
+# All divisors are unique primes so
+# multiplying them will lead to the
+# same result as lcm.
+tests_prod = 1
 a = open(sys.argv[1]).read().rstrip().split('\n\n')
 for monkey in a:
     lines = monkey.split('\n')
@@ -73,13 +77,7 @@ for monkey in a:
     if_f = int(lines[5].split(' throw to monkey ')[1])
     monkeys.append(Monkey(m_id, starting, op, test, if_t, if_f))
     tests.append(test)
-
-# All mods are primes so multiplying
-# all numbers together will give the
-# same result as lcm
-tests_prod = 1
-for p in tests:
-    tests_prod *= p
+    tests_prod *= test
 
 for _ in range(10000):
     for m in monkeys:
