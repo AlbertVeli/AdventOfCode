@@ -61,9 +61,9 @@ numpad = numpad_1
 pos = pos_1
 sys.stdout.write('part 1: ')
 for line in lines:
-    for direction in line.rstrip():
+    for direction in line:
         moves[direction]()
-    sys.stdout.write(str(numpad[pos[0]][pos[1]]))
+    sys.stdout.write(get_pos(pos))
 sys.stdout.write('\n')
 
 # part 2
@@ -71,7 +71,7 @@ numpad = numpad_2
 pos = pos_2
 sys.stdout.write('part 2: ')
 for line in lines:
-    for direction in line.rstrip():
+    for direction in line:
         moves[direction]()
-    sys.stdout.write(str(numpad[pos[0]][pos[1]]))
+    sys.stdout.write(get_pos(pos))
 sys.stdout.write('\n')
