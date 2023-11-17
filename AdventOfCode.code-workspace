@@ -9,7 +9,7 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Python: example.txt",
+				"name": "python example.txt",
 				"type": "python",
 				"request": "launch",
 				"program": "${file}",
@@ -19,7 +19,7 @@
 				"args": ["example.txt"]
 			},
 			{
-				"name": "Python: input.txt",
+				"name": "python input.txt",
 				"type": "python",
 				"request": "launch",
 				"program": "${file}",
