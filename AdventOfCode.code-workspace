@@ -1,8 +1,33 @@
 {
 	"folders": [
 		{
-			"path": "2016/02"
+			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Python: example.txt",
+				"type": "python",
+				"request": "launch",
+				"program": "${file}",
+				"console": "integratedTerminal",
+				"justMyCode": true,
+				"cwd": "${fileDirname}",
+				"args": ["example.txt"]
+			},
+			{
+				"name": "Python: input.txt",
+				"type": "python",
+				"request": "launch",
+				"program": "${file}",
+				"console": "integratedTerminal",
+				"justMyCode": true,
+				"cwd": "${fileDirname}",
+				"args": ["input.txt"]
+			}
+		]
+	}
 }
