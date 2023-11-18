@@ -27,7 +27,19 @@
 				"justMyCode": true,
 				"cwd": "${fileDirname}",
 				"args": ["input.txt"]
-			}
+			},
+			{
+				"name": "C Launch",
+				"type": "cppdbg",
+				"request": "launch",
+				"args": [],
+				"program": "${fileDirname}/${fileBasenameNoExtension}",
+				"cwd": "${fileDirname}",
+				"targetArchitecture": "x86",
+				"stopAtEntry": true,
+				"MIMode": "lldb"
+			  }
+			  
 		]
 	}
 }

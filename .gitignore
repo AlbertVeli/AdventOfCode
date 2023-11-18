@@ -5,3 +5,5 @@ misc/
 .mypy_cache
 __pycache__
 leaderboard.json
+a.out
+a.out.dSYM
