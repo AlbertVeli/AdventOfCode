@@ -37,9 +37,15 @@
 				"cwd": "${fileDirname}",
 				"targetArchitecture": "x86",
 				"stopAtEntry": true,
-				"MIMode": "lldb"
+				"MIMode": "lldb",
+				"linux": {
+					"MIMode": "gdb",
+					"miDebuggerPath": "/usr/bin/gdb"
+				},
+				"osx": {
+					"MIMode": "lldb"
+				},
 			  }
-			  
 		]
 	}
 }
