@@ -39,9 +39,10 @@ def ints(filename:str) -> List[int]:
 # Return list of ints on one line
 def ints(s:str) -> List[int]:
     """
-    Return list of ints on line
+    Takes input as string
+    returns list of ints
     Example:
-    '  330  143  338'
+    '  a330  b143  c338'
     returns [330, 143, 338]
     """
     list_as_str = re.findall(r'([-+]?\d+)', s)
@@ -50,9 +51,9 @@ def ints(s:str) -> List[int]:
 
 def line_of_ints(filename:str) -> List[int]:
     """
-    Integers on one line, comma or whatever-separated
+    Read line of ints from file
     Example:
-    '1, 2, 3, 4'
+    'a1, b2, a3, c4'
     returns [1, 2, 3, 4]
     """
     return ints(input_string(filename))
@@ -82,3 +83,23 @@ def line_of_letterints(filename:str) -> List[tuple]:
     letters = re.findall(r'([A-Z]+)', s)
 
     return list(zip(letters, map(int, ints)))
+
+def char_matrix(filename:str) -> List[List[str]]:
+    """
+    Read input as a matrix.
+    Split each line into chars.
+    Example:
+    abc
+    def
+    returns [['a', 'b', 'c'], ['d', 'e', 'f']]
+    """
+    lineslist = lines(filename)
+    return [list(x) for x in lineslist]
+
+def transpose(matrix):
+    """
+    Example:
+    [[1, 2, 3], [4, 5, 6]]
+    returns [[1, 4], [2, 5], [3, 6]]
+    """
+    return [list(group) for group in zip(*matrix)]
