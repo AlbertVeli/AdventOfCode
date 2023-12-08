@@ -10,8 +10,8 @@ lines = aoc.lines(sys.argv[1])
 lr = lines[0]
 d = dict()
 for line in lines[2:]:
-    caps = re.findall(r'[A-Z]+', line)
-    d[caps[0]] = (caps[1], caps[2])
+    strings = re.findall(r'[A-Z0-9]+', line)
+    d[strings[0]] = (strings[1], strings[2])
 
 i = 0
 length = len(lr)
