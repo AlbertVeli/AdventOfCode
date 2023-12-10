@@ -2,6 +2,7 @@
 
 import json
 from datetime import datetime
+import sys
 
 def date_str(ts_str):
     ts = int(ts_str)
@@ -11,7 +12,7 @@ def date_str(ts_str):
 # Put your local leaderboard in leaderboard.json
 # Download it from https://adventofcode.com/2021/leaderboard/private/view/<id>.json
 # where id is your private leaderboard id.
-data = json.loads(open('leaderboard.json').read())
+data = json.loads(open(sys.argv[1]).read())
 
 # Just for debug, see what fields there are
 #for member in data['members']:
