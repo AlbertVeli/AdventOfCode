@@ -93,6 +93,8 @@ while True:
 print('Part 1:', len(posses) // 2)
 
 
+# Part 2
+
 # First replace S with the appropriate pipe
 mtrx[start_pos[1]][start_pos[0]] = start_pipe
 #dump_matrix(mtrx)
@@ -104,6 +106,9 @@ for y in range(len(mtrx)):
     for x in range(len(mtrx[0])):
         if not (x, y) in posses:
             mtrx[y][x] = '.'
+
+# After cleaning up the matrix, use this algorithm
+# https://gamedev.stackexchange.com/questions/141460/how-can-i-fill-the-interior-of-a-closed-loop-on-a-tile-map
 
 # Corruption spreads like a virus within the Matrix
 for y, line in enumerate(mtrx):
