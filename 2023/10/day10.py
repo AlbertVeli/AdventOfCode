@@ -23,6 +23,11 @@ def new_pos(pos, dir):
     """
     return tuple(a + b for a, b in zip(pos, dir))
 
+def dump_matrix(morpheus):
+    """ the matrix is a system, neo """
+    for line in morpheus:
+        print(''.join(line).replace('.', ' '))
+
 # reach for the red pill
 for y, line in enumerate(mtrx):
     if 'S' in line:
@@ -31,8 +36,6 @@ for y, line in enumerate(mtrx):
 
 # - he told me you killed him
 # - no, I am your father
-
-start_pos = (x, y)
 
 # you ever dance with the devil in the pale moonlight?
 UP = (0, -1)
@@ -59,13 +62,20 @@ moves = {
     ('F', UP): RIGHT
 }
 
-# In example.txt S is 'F', if moving
+# In example1.txt S is 'F', if moving
 # "clockwise" previous move was UP.
 # Enter this manually. In my input S is
 # '|' and prev is UP (DOWN also works).
-#cur = 'F'
-cur = '|'
-dir = UP
+# In example2.txt S is also 'F'.
+
+start_pos = (x, y)
+
+# You should probably change the 2 lines below
+start_pipe = '|'
+start_dir = DOWN
+
+cur = start_pipe
+dir = start_dir
 posses = [start_pos]
 
 # Toto, I have a feeling we're not in Kansas anymore
@@ -81,3 +91,31 @@ while True:
     posses.append(pos)
 
 print('Part 1:', len(posses) // 2)
+
+
+# First replace S with the appropriate pipe
+mtrx[start_pos[1]][start_pos[0]] = start_pipe
+#dump_matrix(mtrx)
+insiders = []
+
+# Neo, sooner or later you're going to realize that there's
+# a difference between knowing the path and walking the path
+for y in range(len(mtrx)):
+    for x in range(len(mtrx[0])):
+        if not (x, y) in posses:
+            mtrx[y][x] = '.'
+
+# Corruption spreads like a virus within the Matrix
+for y, line in enumerate(mtrx):
+    in_simulated_reality = False
+    for x, c in enumerate(line):
+        # - flip simulated reality at |, J and L
+        if c == '|' or c == 'J' or c == 'L':
+            in_simulated_reality = not in_simulated_reality
+        elif c == '.' and in_simulated_reality:
+            mtrx[y][x] = 'I'
+            insiders.append((x, y))
+
+dump_matrix(mtrx)
+
+print('Part 2:', len(insiders))
