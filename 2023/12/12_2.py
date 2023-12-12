@@ -8,7 +8,6 @@
 import sys
 sys.path.append('../..')
 import aoc
-from itertools import product
 import functools
 
 lines = aoc.lines(sys.argv[1])
