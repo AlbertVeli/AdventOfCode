@@ -25,25 +25,26 @@ for line in lines:
 def n_arrangements(s, groups_left, group_sz):
     """
     s = what is left of input line
-    left = number of groups left
-    sz = current size of group
+    groups_left = groups left (tuple)
+    group_sz = current size of group in consumed line (s)
     """
     # base case for recursion
     if len(s) == 0:
         if len(groups_left) == 0 and group_sz == 0:
-            # No groups left
+            # No groups left, it's a match
             return 1
         elif len(groups_left) == 1 and group_sz == groups_left[0]:
-            # 1 group left the same size as current group
+            # 1 group left the same size as current group, match
             return 1
         else:
             # No match
             return 0
 
-    # group too large
+    # consumed groups larger than groups left
     if len(groups_left) > 0 and group_sz > groups_left[0]:
         return 0
-    # too many groups
+    # don't expect any more groups but I am in a group
+    # I need group therapy
     elif len(groups_left) == 0 and group_sz > 0:
         return 0
 
@@ -52,16 +53,19 @@ def n_arrangements(s, groups_left, group_sz):
 
     spring = s[0]
 
-    # ? is # or spring is #
+    # If ? is # or if spring is # is the same case
     if spring == '#' or spring == '?':
         n += n_arrangements(s[1:], groups_left, group_sz + 1)
 
-    # ? is . or spring is .
+    # If ? is . or if spring is . is the same case
     if spring == '.' or spring == '?':
         if len(groups_left) > 0 and group_sz == groups_left[0]:
             n += n_arrangements(s[1:], groups_left[1:], 0)
         elif group_sz == 0:
             n += n_arrangements(s[1:], groups_left, 0)
+
+    # so above ? will recurse 2 times while . or # will recurse
+    # 1 time, each case consuming one input line (s) character
 
     return n
 
