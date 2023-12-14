@@ -23,6 +23,8 @@ def put_rock(x, y, c):
 
 # Roll one rock until it either
 # hits an edge or another rock
+# TODO: It is enough to only roll_north
+#       and rotate arr, instead of 4 functions
 def roll_north(x, y):
     for yy in range(y - 1, -1, -1):
         if get_rock(x, yy) == '.':
@@ -102,23 +104,26 @@ def do_cycle():
     tilt_east()
 
 weights = []
+hashdic = {}
 
-for i in range(120):
+# Find cycle_start and cycle_length
+# The first time the hash of the array
+# repeats we have a cycle which will
+# repeat infinitely.
+i = 0
+while True:
     do_cycle()
     weights.append(calc_weight())
-    # You can use the hash of arr to search for loops
-    # or just the weights
-    #print(i, hash(tuple(map(tuple, arr))), calc_weight())
+    arrhash = hash(tuple(map(tuple, arr)))
+    if arrhash in hashdic:
+        cycle_start = hashdic[arrhash]
+        cycle_length = i - cycle_start
+        # Found cycle, end loop
+        break
+    # Add index of this hash
+    hashdic[arrhash] = i
+    i += 1
 
-# inspect output from print above and enter cycle_start and
-# cycle_length manually, in both example and my input
-# cycle_length is 7, in example cycle_start is at index 2
-# and in my input it is at index 112
-# Note, you could also use Floyd’s cycle-finding algorithm
-# to calculate cycle_start and cycle_length, this would
-# work for any input.
-cycle_start = 112
-cycle_length = 7
 wanted_index = 1000000000 - 1
 # Calculate which index is the same as wanted_index
 index = cycle_start + (wanted_index - cycle_start) % cycle_length
