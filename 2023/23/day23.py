@@ -5,6 +5,7 @@ sys.path.append('../..')
 import aoc
 import copy
 from collections import deque
+from random import shuffle
 
 grid = aoc.char_matrix(sys.argv[1])
 width = len(grid[0])
@@ -52,6 +53,8 @@ def find_max_path(from_pos: tuple, visited: deque[tuple], taken_steps: int, debu
         if debug:
             #dump_grid(single_visited)
             #input('')
+            # One of these returns has the correct answer
+            # print all of them and find max using max.py
             print(taken_steps)
             sys.stdout.flush()
         return taken_steps
@@ -75,24 +78,31 @@ def find_max_path(from_pos: tuple, visited: deque[tuple], taken_steps: int, debu
             if debug:
                 #dump_grid(single_visited)
                 #input('')
+                # This may also be the correct answer
                 print(taken_steps + single_steps)
                 sys.stdout.flush()
             return taken_steps + single_steps
 
     max_steps = 0
+    # Do random walk, start multiple instances, aggregate outputs
+    # Hope to find max in some of them
+    shuffle(positions)
     for new_pos in positions:
         new_visited = copy.copy(single_visited)
         new_visited.append(new_pos)
         new_steps = find_max_path(new_pos, new_visited, taken_steps + single_steps + 1, debug)
         if new_steps > max_steps:
             max_steps = new_steps
+    if debug:
+        print(max_steps)
+        sys.stdout.flush()
     return max_steps
 
 # Probably not good solution if this is needed...
 sys.setrecursionlimit(10000)
 
 # deque has faster append than list
-print('Part 1:', find_max_path(start_position, deque([start_position]), 0))
+#print('Part 1:', find_max_path(start_position, deque([start_position]), 0))
 #dump_grid([start_position])
 # Part 2, remove all '>', 'v' slopes
 for row in grid:
@@ -100,4 +110,8 @@ for row in grid:
         if c == '>' or c == 'v' or c == '<' or c == '^':
             row[x] = '.'
 #dump_grid([start_position])
+
+# If you're lucky find_max_path will print the max path after a few hours
+# but it will not finish in reasonable time, but there is still a probability
+# one of the printed is max. Run multiple instances and aggregate with max.py
 print('Part 2:', find_max_path(start_position, deque([start_position]), 0, debug = True))
