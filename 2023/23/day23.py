@@ -49,19 +49,40 @@ def possible_positions(cur_pos, visited):
 def find_max_path(from_pos: tuple, visited: list[tuple], taken_steps: int):
     if from_pos == end_position:
         return taken_steps
-    
-    positions = possible_positions(from_pos, visited)
-    steps = [0]
+
+    # Optimization, continue walking until a fork
+    # this reduces recursion depth
+    single_steps = 0
+    single_visited = copy.copy(visited)
+    while True:
+        #dump_grid(single_visited)
+        #input('')
+        positions = possible_positions(from_pos, single_visited)
+        l = len(positions)
+        if l > 1:
+            break
+        if l == 0:
+            # nowhere to go, return 0
+            break
+        from_pos = positions[0]
+        single_visited.append(from_pos)
+        single_steps += 1
+        if from_pos == end_position:
+            return taken_steps + single_steps
+
+    max_steps = 0
     for new_pos in positions:
-        new_visited = copy.copy(visited)
+        new_visited = copy.copy(single_visited)
         new_visited.append(new_pos)
-        steps.append(find_max_path(new_pos, new_visited, taken_steps + 1))
-    return max(steps)
+        new_steps = find_max_path(new_pos, new_visited, taken_steps + single_steps + 1)
+        if new_steps > max_steps:
+            max_steps = new_steps
+    return max_steps
 
 # Probably not good solution if this is needed...
-sys.setrecursionlimit(10000)
+#sys.setrecursionlimit(10000)
 
-#print('Part 1:', find_max_path(start_position, [start_position], 0))
+print('Part 1:', find_max_path(start_position, [start_position], 0))
 #dump_grid([start_position])
 # Part 2, remove all '>', 'v' slopes
 for row in grid:
