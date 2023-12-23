@@ -4,6 +4,7 @@ import sys
 sys.path.append('../..')
 import aoc
 import copy
+from collections import deque
 
 grid = aoc.char_matrix(sys.argv[1])
 width = len(grid[0])
@@ -21,8 +22,8 @@ def dump_grid(visited: list[tuple]):
                 print(c, end='')
         print('')
 
-# east, south, west, up
-dirs = ((1, 0), (0, 1), (-1, 0), (0, -1))
+# south, west, up, east
+dirs = ((0, 1), (-1, 0), (0, -1), (1, 0))
 
 def add_pos_dir(pos, dir):
     return tuple(map(sum, zip(pos, dir)))
@@ -46,8 +47,13 @@ def possible_positions(cur_pos, visited):
             l.append((x, y))
     return l
 
-def find_max_path(from_pos: tuple, visited: list[tuple], taken_steps: int):
+def find_max_path(from_pos: tuple, visited: deque[tuple], taken_steps: int, debug = False):
     if from_pos == end_position:
+        if debug:
+            #dump_grid(single_visited)
+            #input('')
+            print(taken_steps)
+            sys.stdout.flush()
         return taken_steps
 
     # Optimization, continue walking until a fork
@@ -55,8 +61,6 @@ def find_max_path(from_pos: tuple, visited: list[tuple], taken_steps: int):
     single_steps = 0
     single_visited = copy.copy(visited)
     while True:
-        #dump_grid(single_visited)
-        #input('')
         positions = possible_positions(from_pos, single_visited)
         l = len(positions)
         if l > 1:
@@ -68,21 +72,27 @@ def find_max_path(from_pos: tuple, visited: list[tuple], taken_steps: int):
         single_visited.append(from_pos)
         single_steps += 1
         if from_pos == end_position:
+            if debug:
+                #dump_grid(single_visited)
+                #input('')
+                print(taken_steps + single_steps)
+                sys.stdout.flush()
             return taken_steps + single_steps
 
     max_steps = 0
     for new_pos in positions:
         new_visited = copy.copy(single_visited)
         new_visited.append(new_pos)
-        new_steps = find_max_path(new_pos, new_visited, taken_steps + single_steps + 1)
+        new_steps = find_max_path(new_pos, new_visited, taken_steps + single_steps + 1, debug)
         if new_steps > max_steps:
             max_steps = new_steps
     return max_steps
 
 # Probably not good solution if this is needed...
-#sys.setrecursionlimit(10000)
+sys.setrecursionlimit(10000)
 
-print('Part 1:', find_max_path(start_position, [start_position], 0))
+# deque has faster append than list
+print('Part 1:', find_max_path(start_position, deque([start_position]), 0))
 #dump_grid([start_position])
 # Part 2, remove all '>', 'v' slopes
 for row in grid:
@@ -90,4 +100,4 @@ for row in grid:
         if c == '>' or c == 'v' or c == '<' or c == '^':
             row[x] = '.'
 #dump_grid([start_position])
-print('Part 2:', find_max_path(start_position, [start_position], 0))
+print('Part 2:', find_max_path(start_position, deque([start_position]), 0, debug = True))
