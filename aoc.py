@@ -1,7 +1,8 @@
 # aoc helper functions, mostly for input, inspired by:
 # https://blog.keiruaprod.fr/2021/11/23/getting-ready-for-adventofcode-in-python.html
 
-from typing import List
+from collections import deque
+from typing import Dict, List, Optional
 import re
 
 def input_string(filename:str) -> str:
@@ -103,3 +104,148 @@ def transpose(matrix):
     returns [[1, 4], [2, 5], [3, 6]]
     """
     return [list(group) for group in zip(*matrix)]
+
+# Some basic functions
+
+def bfs(graph: Dict[str, List[str]], root: str, goal: str) -> bool:
+    """
+    Perform a breadth-first search to determine if there is a path from root to goal in the graph.
+
+    Args:
+        graph (Dict[str, List[str]]): A dictionary representing the graph. Each key is a node,
+                                      and the value is a list of nodes it can reach.
+        root (str): The starting node of the search.
+        goal (str): The target node to find.
+
+    Returns:
+        bool: True if there is a path from root to goal, False otherwise.
+    """
+    queue = deque()
+    seen = set()
+
+    queue.appendleft(root)
+    seen.add(root)
+
+    while queue:
+        current = queue.popleft()
+        if current == goal:
+            return True
+        for neighbor in graph.get(current, []):
+            if neighbor not in seen:
+                seen.add(neighbor)
+                queue.append(neighbor)
+
+    return False
+
+def bfs_with_path(graph: Dict[str, List[str]], root: str, goal: str) -> Optional[List[str]]:
+    """
+    Perform a breadth-first search to determine if there is a path from root to goal
+    in the graph and return the path if found.
+
+    Args:
+        graph (Dict[str, List[str]]): A dictionary representing the graph. Each key is a node,
+                                      and the value is a list of nodes it can reach.
+        root (str): The starting node of the search.
+        goal (str): The target node to find.
+
+    Returns:
+        Optional[List[str]]: A list of nodes representing the path from root to goal if found,
+                             None otherwise.
+    """
+    queue = deque()
+    seen = set()
+    parent = {}
+
+    queue.appendleft(root)
+    seen.add(root)
+    parent[root] = None  # Root has no parent
+
+    while queue:
+        current = queue.popleft()
+        if current == goal:
+            # Reconstruct the path from root to goal
+            path = []
+            while current is not None:
+                path.append(current)
+                current = parent[current]
+            return path[::-1]  # Reverse to get path from root to goal
+
+        for neighbor in graph.get(current, []):
+            if neighbor not in seen:
+                seen.add(neighbor)
+                parent[neighbor] = current  # Track the parent of the neighbor
+                queue.append(neighbor)
+    # Goal not found
+    return None
+
+def dfs(graph: Dict[str, List[str]], root: str, goal: str) -> bool:
+    """
+    Perform an iterative depth-first search to determine if there is a path from root to goal
+    in the graph.
+
+    Args:
+        graph (Dict[str, List[str]]): A dictionary representing the graph. Each key is a node,
+                                      and the value is a list of nodes it can reach.
+        root (str): The starting node of the search.
+        goal (str): The target node to find.
+
+    Returns:
+        bool: True if there is a path from root to goal, False otherwise.
+    """
+    stack = [root]
+    seen = set()
+
+    while stack:
+        current = stack.pop()
+
+        if current == goal:
+            return True
+
+        if current not in seen:
+            seen.add(current)
+            for neighbor in graph.get(current, []):
+                if neighbor not in seen:
+                    stack.append(neighbor)
+
+    return False
+
+def dfs_with_path(graph: Dict[str, List[str]], root: str, goal: str) -> Optional[List[str]]:
+    """
+    Perform an iterative depth-first search to determine if there is a path from root to goal
+    in the graph and return the path if found.
+
+    Args:
+        graph (Dict[str, List[str]]): A dictionary representing the graph. Each key is a node,
+                                      and the value is a list of nodes it can reach.
+        root (str): The starting node of the search.
+        goal (str): The target node to find.
+
+    Returns:
+        Optional[List[str]]: A list of nodes representing the path from root to goal if found,
+                             None otherwise.
+    """
+    stack = [root]
+    seen = set()
+    parent = {}
+
+    parent[root] = None  # Root has no parent
+
+    while stack:
+        current = stack.pop()
+
+        if current == goal:
+            # Reconstruct the path from root to goal
+            path = []
+            while current is not None:
+                path.append(current)
+                current = parent[current]
+            return path[::-1]  # Reverse to get path from root to goal
+
+        if current not in seen:
+            seen.add(current)
+            for neighbor in graph.get(current, []):
+                if neighbor not in seen:
+                    parent[neighbor] = current  # Track the parent of the neighbor
+                    stack.append(neighbor)
+
+    return None  # Goal not found
