@@ -70,15 +70,14 @@ def simulate(obstruction, start):
 a = aoc.char_matrix(sys.argv[1])
 rows, cols = len(a), len(a[0])
 start = find_coord('^')
-x, y = start
-a[y][x] = '.'
-pos = start
+put_char(start, '.')
 # up, right, down, left
 directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
 # part 1
 visited = set()
 visited.add(start)
+pos = start
 curdir = 0
 while pos is not None:
     pos, curdir = walk_one_step(pos, curdir)
