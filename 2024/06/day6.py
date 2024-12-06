@@ -6,7 +6,12 @@ import aoc
 
 # For visualization and debugging
 def print_matrix(matrix, pos):
-    print('\n'.join(''.join('@' if (x, y) == pos else cell for x, cell in enumerate(row)) for y, row in enumerate(matrix)))
+    # Clear screen
+    print("\033[2J\033[H", end="")
+    for y, row in enumerate(matrix):
+        line = ''.join('@' if (x, y) == pos else cell for x, cell in enumerate(row))
+        print(line)
+    print()  # Add a blank line for separation
     input('Press Enter to continue...')
 
 def find_coord(char):
