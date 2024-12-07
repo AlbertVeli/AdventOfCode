@@ -5,21 +5,41 @@ sys.path.append('../..')
 import aoc
 from itertools import product
 
-def eval_expr(a, b, op):
-        if op == '+':
-            return a + b
-        elif op == '*':
-            return a * b
-        elif op == '||':
-            return int(str(a) + str(b))
+def get_ops(length):
+    """
+    Generate combinations of operators for given length
+    cache results for faster lookup.
+    globals: operator_cache, operators
+    """
+    if length not in operator_cache:
+        # Number of operators is length - 1
+        # ie. 3 numbers, 2 operators
+        operator_cache[length] = list(product(operators, repeat=length - 1))
+    return operator_cache[length]
 
-def evaluate(values, target, operators):
+# Use lambda to evaluate expressions
+# for faster execution
+eval_expr = lambda a, b, op: (
+        a + b if op == '+' else
+        a * b if op == '*' else
+        # '||'
+        int(str(a) + str(b))
+)
 
-    if not values or len(values) < 2:
+def evaluate(values, target):
+    """
+    Evaluate using all possible combinations of operators
+    and check if any of them match the target.
+    globals: operators
+    """
+
+    length = len(values)
+
+    if not values or length < 2:
         return False
 
     # Generate all combinations of operators
-    for ops in product(operators, repeat=len(values) - 1):
+    for ops in get_ops(length):
 
         result = values[0]
 
@@ -39,13 +59,15 @@ eqs = aoc.lines_of_ints(sys.argv[1])
 # Part 1
 result = 0
 operators = ['+', '*']
+operator_cache = {}
 for line in eqs:
-    result += evaluate(line[1:], line[0], operators)
+    result += evaluate(line[1:], line[0])
 print('Part 1:', result)
 
 # Part 2
 result = 0
 operators = ['+', '*', '||']
+operator_cache = {}
 for line in eqs:
-    result += evaluate(line[1:], line[0], operators)
+    result += evaluate(line[1:], line[0])
 print('Part 2:', result)
