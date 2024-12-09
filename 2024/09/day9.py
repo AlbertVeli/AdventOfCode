@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 sys.path.append('../..')
 import aoc
@@ -26,7 +28,9 @@ def compact_disk_1(layout):
 
     return calc_checksum(layout)
 
-def find_free_space(layout, file_length):
+# Functions for part 2
+
+def find_free_space(length):
     """
     Find the first free space large enough to store a file of the given length.
     """
@@ -38,7 +42,7 @@ def find_free_space(layout, file_length):
             if start is None:
                 start = i
             count += 1
-            if count >= file_length:
+            if count >= length:
                 return start  # Found a suitable span
         else:
             # Reset if we encounter a non-free space
@@ -47,13 +51,66 @@ def find_free_space(layout, file_length):
 
     return None  # No suitable span found
 
+
+def find_last_file():
+    """
+    Find the ID of the last file in the layout.
+    Returns the file ID and its starting index and length.
+    """
+    for i in range(len(layout) - 1, -1, -1):  # Traverse from right to left
+        if isinstance(layout[i], int):  # Found a file block
+            file_id = layout[i]
+            start = layout.index(file_id)  # Find the first occurrence
+            length = layout.count(file_id)  # Count the number of blocks
+            return file_id, start, length
+    return None, None, None  # No files found
+
+def cleanup_layout_after_move(length):
+    """
+    Truncate the layout by removing `length` elements from the end,
+    and then remove trailing '.' elements.
+    """
+    global layout
+    # Truncate the layout
+    layout = layout[:-length]
+
+    # Remove trailing free spaces
+    while layout and layout[-1] == ".":
+        layout.pop()
+
+    return layout
+
+def move_files_in_order():
+    """
+    Attempt to move files starting from the last file to the first.
+    Stops when all files have been processed, and no file can be moved.
+    """
+    global layout
+
+    # Traverse file IDs in descending order
+    file_ids = sorted(set(block for block in layout if isinstance(block, int)), reverse=True)
+
+    for file_id in file_ids:
+        # Find file start and length
+        start = layout.index(file_id)
+        length = layout.count(file_id)
+
+        # Find a free space large enough for this file
+        free_space_start = find_free_space(length)
+        if free_space_start is not None and free_space_start < start:
+            # Move the file
+            layout[start:start + length] = ["."] * length
+            layout[free_space_start:free_space_start + length] = [file_id] * length
+
+    # Remove trailing free spaces
+    while layout and layout[-1] == ".":
+        layout.pop()
+
 # Main
 
 disk = aoc.input_string(sys.argv[1])
-with open(sys.argv[1], "r") as f:
-    disk = f.read().strip()
 
-# Construct the initial layout (files and free spaces)
+# Construct the initial layout
 layout = []
 for i in range(len(disk)):
     if i % 2:
@@ -63,18 +120,16 @@ for i in range(len(disk)):
     layout.extend([ch] * int(disk[i]))
 
 initial_layout = layout.copy()
-
-print(f"Initial Layout: {''.join(map(str, layout))}")
-
 print('Part 1:', compact_disk_1(layout))
+
 
 # Part 2
 
+#print(f"Initial Layout: {''.join(map(str, layout))}")
+
 layout = initial_layout
 
-# Test find_free_space
-file_length = 3
-free_space_start = find_free_space(layout, file_length)
-print(f"First free space large enough for file of length {file_length}: {free_space_start}")
+move_files_in_order()
 
-# TODO: Implement the rest of Part 2
+#print(f"Layout: {''.join(map(str, layout))}")
+print('Part 2:', calc_checksum(layout))
