@@ -3,17 +3,18 @@
 import sys
 sys.path.append('../..')
 import aoc
+import numpy as np
 
-def minimize_presses(da, db, px, py, cost_a=3, cost_b=1):
+def minimize_presses_1(A, B, P, cost_a=3, cost_b=1):
     """
-    Press buttons A and B to reach (px, py) from (0, 0).
+    Bruteforce solution.
     """
-    dx1, dy1 = da
-    dx2, dy2 = db
+    dx1, dy1 = A
+    dx2, dy2 = B
+    px, py = P
 
     # Brute force.
     # This will not work for part 2.
-    # We need to find a better way to solve this.
     min_tokens = float('inf')
     best_a, best_b = None, None
     max_a = max(px // dx1, py // dy1) + 1
@@ -34,16 +35,41 @@ def minimize_presses(da, db, px, py, cost_a=3, cost_b=1):
 
     return min_tokens
 
+def minimize_presses_2(A, B, P, cost_a=3, cost_b=1):
+    """
+    Numpy matrix vector linalg solution.
+    """
+    ax, ay = A
+    bx, by = B
+    px, py = P
+
+    # Construct matrix M and vector v
+    M = np.matrix([(ax, bx), (ay, by)], dtype=float)
+    v = np.array((px, py), dtype=float)
+
+    # Solve the system of equations
+    solution = np.linalg.solve(M, v)
+    a, b = solution.round(2)
+    if all(n.is_integer() for n in [a, b]):
+        cost = int(a) * cost_a + int(b) * cost_b
+        return cost
+
+    return False
+
+
+# Main
+
 data = aoc.lines_of_ints(sys.argv[1])
 
 # Part 1
 ntokens = 0
 for i in range(0, len(data), 4):
-    ax, ay = data[i + 0]
-    bx, by = data[i + 1]
+    A = data[i + 0]
+    B = data[i + 1]
     px, py = data[i + 2]
-    tokens = minimize_presses((ax, ay), (bx, by), px, py)
+    tokens = minimize_presses_1(A, B, (px, py))
     if tokens:
+        #print((i // 4) + 1, tokens)
         ntokens += tokens
 print('Part 1:', ntokens)
 
@@ -51,10 +77,11 @@ print('Part 1:', ntokens)
 ntokens = 0
 offset = 10000000000000
 for i in range(0, len(data), 4):
-    ax, ay = data[i + 0]
-    bx, by = data[i + 1]
+    A = data[i + 0]
+    B = data[i + 1]
     px, py = data[i + 2]
-    tokens = minimize_presses((ax, ay), (bx, by), offset + px, offset + py)
+    tokens = minimize_presses_2(A, B, (offset + px, offset + py))
     if tokens:
+        #print((i // 4) + 1, tokens)
         ntokens += tokens
 print('Part 2:', ntokens)
