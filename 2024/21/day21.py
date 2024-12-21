@@ -87,23 +87,28 @@ def n_moves(start, end, r, max_depth):
 
     return min_cost
 
-# Extract the numeric part of a code
 def get_numeric_part(code):
     numeric_str = ''.join(filter(str.isdigit, code))
     return int(numeric_str)
 
-# Main calculation function
-def conondrum(codes, max_depth):
+def keypad_conundrum(codes, max_depth):
     total_cost = 0
     for code in codes:
         extended_code = 'A' + code
-        code_cost = sum(n_moves(extended_code[i], extended_code[i + 1], 0, max_depth) for i in range(len(extended_code) - 1))
-        numeric_part = get_numeric_part(code[:-1])
+        code_cost = 0
+        for i in range(len(extended_code) - 1):
+            start = extended_code[i]
+            end = extended_code[i + 1]
+            cost = n_moves(start, end, 0, max_depth)
+            code_cost += cost
+        numeric_part = get_numeric_part(code)
         total_cost += code_cost * numeric_part
     return total_cost
+
+# Main
 
 with open(sys.argv[1], 'r') as f:
     lines = f.read().splitlines()
 
-print('Part 1:', conondrum(lines, 2))
-print('Part 2:', conondrum(lines, 25))
+print('Part 1:', keypad_conundrum(lines, 2))
+print('Part 2:', keypad_conundrum(lines, 25))
