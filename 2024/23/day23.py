@@ -39,7 +39,7 @@ triangles = find_triangles(graph)
 # Count triangles with a node beginning with 't'
 result = 0
 for triangle in sorted(triangles):
-    if triangle[0][0] == 't' or triangle[1][0] == 't' or triangle[2][0] == 't':
+    if any(node[0] == 't' for node in triangle):
         result += 1
         print('-'.join(triangle))
 print('Part 1:', result)
