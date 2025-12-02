@@ -37,18 +37,14 @@ for part in line.split(','):
     a, b = part.split('-')
     ranges.append((int(a), int(b)))
 
-output = 0
+o1 = 0
+o2 = 0
 for r1, r2 in ranges:
     for n in range(r1, r2 + 1):
         if is_invalid_id(n):
-            output += n
-
-print('Part 1:', output)
-
-output = 0
-for r1, r2 in ranges:
-    for n in range(r1, r2 + 1):
+            o1 += n
         if is_invalid_id_2(n):
-            output += n
+            o2 += n
 
-print('Part 2:', output)
+print('Part 1:', o1)
+print('Part 2:', o2)
