@@ -15,6 +15,11 @@ dirs = [
     (-1,  1), (0,  1), (1,  1),
 ]
 
+def visualize():
+    for y in range(h):
+        print(grid[y])
+    print('')
+
 def neigh_cnt(x, y):
     count = 0
     for dx, dy in dirs:
@@ -27,22 +32,37 @@ def neigh_cnt(x, y):
 
 def one_pass(remove = False):
     count = 0
+    poss = []
     for y in range(h):
         for x in range(w):
             if grid[y][x] == '@':
                 n = neigh_cnt(x, y)
                 if n < 4:
+                    poss.append((x, y))
                     if remove:
+                        # Remove as we go, faster
+                        # but wrong for part 1
                         grid[y][x] = 'x'
                     count += 1
+    if not remove:
+        for xx, yy in poss:
+            grid[yy][xx] = 'x'
+
     return count
 
-print('Part 1:', one_pass())
+visualize()
 
-cnt = 0
+cnt = one_pass()
+
+visualize()
+
+print('Part 1:', cnt)
+
 n = 1
 while n > 0:
-    n = one_pass(True)
+    n = one_pass(remove = True)
     cnt += n
+
+visualize()
 
 print('Part 2:', cnt)
