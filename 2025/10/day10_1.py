@@ -7,11 +7,11 @@ from itertools import combinations
 # Regexes for the three parts of each line
 INDICATOR_RE = re.compile(r'\[([.#]+)\]')
 BUTTON_RE    = re.compile(r'\(([^)]*)\)')
-JOLTAGE_RE   = re.compile(r'\{([^}]*)\}')
+JOLTAGE_RE   = re.compile(r'\{([^}]*)\}') # ignored in part 1
 
 class Machine:
     """
-    One factory machine configuration
+    One factory machine configuration for part 1
     num_lights: Number of indicator lights
     target_mask: Bitmask of target light pattern
     button_masks: List of bitmasks for each button
